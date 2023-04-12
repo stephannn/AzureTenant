@@ -101,7 +101,8 @@ Function Compare-DeviceConfigurationProfileSetting(){
         #$type = $_.settingInstance.'@odata.type'
         [string]$settingDefinition = $_.settingInstance.settingDefinitionId.toString()
         $choiceSettingValue = $_.settingInstance.choiceSettingValue
-
+        $instance = $_.settingInstance
+        Write-Host $instance
         $Template.settingInstance | Where-Object { $_.settingDefinitionId -eq $settingDefinition } | ForEach-Object {
             if(!([string]::IsNullOrEmpty($_.choiceSettingValue))){
                 # Debug setting
@@ -138,7 +139,11 @@ Function Compare-DeviceConfigurationProfileSetting(){
 
             if($modify -eq $true){
                 Write-Host "Adding Setting"
-                # TBD
+                $newvalue = New-Object PSObject -Property @{            
+                    id = "$(($Template.ID | Measure-Object -Maximum).Maximum + 1)"          
+                    settingInstance = $_.settingInstance 
+                }
+                $Template += $newvalue
             }
         }
     }
