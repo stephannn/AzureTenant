@@ -119,7 +119,7 @@ Function Compare-DeviceConfigurationProfileSetting(){
                     #if($choiceSettingValue -ne $_.choiceSettingValue){
                     if( $cpresult -eq $false){
 
-                        Write-Host "Setting: $settingDefinition" -ForegroundColor Green
+                        Write-Host "Setting:         $settingDefinition" -ForegroundColor Green
                         Write-Host "Custom Setting:  $choiceSettingValue"
                         Write-Host "SB Setting:      $($_.choiceSettingValue)"
                     
@@ -129,6 +129,16 @@ Function Compare-DeviceConfigurationProfileSetting(){
                         }
                     }
                 }
+            }
+        }
+
+        if($Template.settingInstance.settingDefinitionId -notcontains $settingDefinition ){
+            Write-Host "Setting missing: $settingDefinition" -ForegroundColor Yellow
+            Write-Host "Value: $choiceSettingValue"
+
+            if($modify -eq $true){
+                Write-Host "Adding Setting"
+                # TBD
             }
         }
     }
